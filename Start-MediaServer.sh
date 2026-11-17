@@ -1,19 +1,19 @@
 #!/usr/bin/env bash
 
-SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+SCRIPT_DIR="$(dirname "$(readlink -f "$0")")"
 
 if [[ ! -f "$SCRIPT_DIR/config.env" ]]; then
-    echo "Error: config.env not found."
-    echo "Copy config.example.env to config.env and add your VM details first."
+    echo "ERROR: config.env not found in $SCRIPT_DIR"
+    read -p "Press Enter to close..."
     exit 1
 fi
 
 source "$SCRIPT_DIR/config.env"
 
-echo "Starting $VM_NAME..."
-virsh start "$VM_NAME" 2>/dev/null
+echo "Starting VM: $VM_NAME..."
+virsh -c qemu:///system start "$VM_NAME"
 
-echo "Waiting for VM network, SSH, and Jellyfin (port 8096) to wake up..."
+echo "Waiting for VM network, SSH, and Jellyfin (port 8096)..."
 until ssh -o BatchMode=yes -o ConnectTimeout=2 -o StrictHostKeyChecking=no "$VM_USER@$VM_IP" "ss -tln | grep -q :8096" 2>/dev/null; do
     sleep 2
 done
@@ -28,5 +28,5 @@ ssh -N -L 0.0.0.0:8096:localhost:8096 "$VM_USER@$VM_IP"
 
 echo ""
 echo "Tunnel closed. Safely shutting down $VM_NAME..."
-virsh shutdown "$VM_NAME"
-sleep 3
+virsh -c qemu:///system shutdown "$VM_NAME"
+read -p "Done! Press Enter to close this window..."
