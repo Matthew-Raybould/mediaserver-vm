@@ -24,7 +24,7 @@ echo "Connect on your LAN device using your Host IP + :8096"
 echo "Press Ctrl+C in this window to stop & shut down the VM."
 echo "=========================================="
 
-ssh -N -L 0.0.0.0:8096:localhost:8096 "$VM_USER@$VM_IP"
+ssh -N -L 8096:0.0.0.0:8096 "$VM_USER@$VM_IP"
 
 echo ""
 echo "Tunnel closed. Safely shutting down $VM_NAME..."

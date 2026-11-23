@@ -6,6 +6,11 @@ This server acts as an on-demand homelab media server running **Ubuntu Server** 
 ```text
 [LAN Device] ---> [Host Wi-Fi IP :8096] ---> [SSH Tunnel] ---> [Ubuntu VM :8096 (Jellyfin)]
 ```
+## Disk Layout
+```text
+[/dev/vda (40G Logical Volume Manager) --> / (OS & Jellyfin)]
+[/dev/vdb (80G) --> /srv/media (Media Library)]
+```
 
 ## Quick Setup
 1. **VM Setup:** Install Ubuntu Server in `virt-manager` using default NAT networking.
