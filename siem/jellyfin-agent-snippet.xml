@@ -1,0 +1,5 @@
+<!-- Add inside <ossec_config> in /var/ossec/etc/ossec.conf on mediaserver -->
+<localfile>
+  <log_format>syslog</log_format>
+  <location>/var/log/jellyfin/jellyfin*.log</location>
+</localfile>

@@ -1,3 +1,9 @@
 config.env
 *.qcow2
 *.iso
+
+# SIEM / Wazuh sensitive & generated files
+wazuh-install-files.tar
+wazuh-passwords.txt
+*.tar
+*.log

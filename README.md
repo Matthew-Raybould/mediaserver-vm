@@ -4,7 +4,9 @@ This server acts as an on-demand homelab media server running **Ubuntu Server** 
 
 ## Network Flow
 ```text
-[LAN Device] ---> [Host Wi-Fi IP :8096] ---> [SSH Tunnel] ---> [Ubuntu VM :8096 (Jellyfin)]
+Mediaserver:  [LAN Device] ---> [Host Wi-Fi IP :8096] ---> [SSH Tunnel] ---> [Ubuntu VM :8096 (Jellyfin)]
+
+SIEMserver: [Mediaserver (Wazuh agent)] ---> [Internal Network] [SIEMserver (Wazuh manager)]
 ```
 ## Disk Layout
 ```text
@@ -22,7 +24,8 @@ This server acts as an on-demand homelab media server running **Ubuntu Server** 
    nano config.env
    chmod +x Start-MediaServer.sh
    ```
-5. **Run:** Run `Start-MediaServer.sh`-> Press `Ctrl+C` when finished to close the tunnel and shut down the VM.
+   **SIEM Setup (Optional):** Follow [siem/README.md](siem/README.md) to setup Wazuh and SIEM VM.
+5. **Run:** Run `Start-MediaServer.sh`-> Press `Ctrl+C` when finished to close the tunnel and shut down the VM(s).
 
 ---
 *Built as a first homelab project to practice Linux virtualization, permissions, Samba file sharing, and SSH tunneling, with AI assistance used for some scripting and troubleshooting.*

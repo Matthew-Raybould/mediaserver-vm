@@ -10,7 +10,12 @@ fi
 
 source "$SCRIPT_DIR/config.env"
 
-echo "Starting VM: $VM_NAME..."
+echo "Starting SIEM Server: $SIEM_NAME..."
+virsh -c qemu:///system start "$SIEM_NAME"
+echo "Please wait..."
+sleep 15
+
+echo "Starting Media Server: $VM_NAME..."
 virsh -c qemu:///system start "$VM_NAME"
 
 echo "Waiting for VM network, SSH, and Jellyfin (port 8096)..."
@@ -24,9 +29,12 @@ echo "Connect on your LAN device using your Host IP + :8096"
 echo "Press Ctrl+C in this window to stop & shut down the VM."
 echo "=========================================="
 
-ssh -N -L 8096:0.0.0.0:8096 "$VM_USER@$VM_IP"
+ssh -N -L 0.0.0.0:8096:127.0.0.1:8096 "$VM_USER@$VM_IP"
 
 echo ""
-echo "Tunnel closed. Safely shutting down $VM_NAME..."
+echo "Tunnel closed. Safely shutting down $VM_NAME and $SIEM_NAME..."
 virsh -c qemu:///system shutdown "$VM_NAME"
+virsh -c qemu:///system shutdown "$SIEM_NAME"
+echo "Please wait..."
+sleep 15
 read -p "Done! Press Enter to close this window..."
